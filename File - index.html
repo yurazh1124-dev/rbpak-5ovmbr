@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Волонтерський хаб РБпАК — технологічний моніторинг, інженерні рішення та польова практика на Олександрівському напрямку. Підтримайте команду дронів.">
+  <meta name="keywords" content="РБпАК, волонтери, підтримка, Україна, моніторинг">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Волонтерський хаб РБпАК — Підтримати команду">
+  <meta property="og:description" content="Технологічний моніторинг, інженерні рішення та польова практика. Кожна гривня наближає спільну мету.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="logo.png">
+  <title>Волонтерський хаб РБпАК | Підтримати проєкт</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Exo+2:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #060d1f;
+      --navy2: #0b1630;
+      --navy3: #111e3a;
+      --gold: #c8920a;
+      --gold-light: #f0b429;
+      --gold-pale: #ffd97033;
+      --ua-blue: #0057b7;
+      --ua-blue-light: #1a7de8;
+      --silver: #b0bec5;
+      --silver-light: #dce8f0;
+      --white: #f0f4ff;
+      --text: #cdd8f0;
+      --text-dim: #7a90b8;
+      --accent-green: #22c55e;
+      --border: rgba(200,146,10,0.25);
+      --glow-gold: 0 0 30px rgba(200,146,10,0.35);
+      --glow-blue: 0 0 30px rgba(0,87,183,0.45);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+
+    /* ── CIRCUIT CANVAS BACKGROUND ── */
+    #circuit-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+      opacity: 0.18;
+    }
+
+    /* ── NOISE GRAIN OVERLAY ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028; pointer-events: none; z-index: 1;
+    }
+
+    section, header, footer { position: relative; z-index: 2; }
+
+    /* ── HEADER / NAV ── */
+    .site-header {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(6,13,31,0.96) 0%, rgba(6,13,31,0) 100%);
+      backdrop-filter: blur(4px);
+    }
+    .header-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+    .header-logo img {
+      width: 44px; height: 44px; object-fit: contain;
+    }
+    .header-logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px; letter-spacing: 1.5px;
+      color: var(--gold-light);
+      line-height: 1.1;
+    }
+    .header-logo-text span { display: block; font-size: 11px; letter-spacing: 2px; color: var(--silver); font-family: 'Exo 2', sans-serif; font-weight: 500; text-transform: uppercase; }
+    .header-cta {
+      background: var(--gold); color: var(--navy);
+      padding: 9px 22px; border-radius: 4px;
+      font-family: 'Bebas Neue', sans-serif; letter-spacing: 1.5px; font-size: 15px;
+      text-decoration: none; transition: all .25s;
+      box-shadow: 0 0 14px rgba(200,146,10,0.4);
+      white-space: nowrap;
+    }
+    .header-cta:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 0 22px rgba(240,180,41,0.55); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 110px 24px 60px;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,87,183,0.18) 0%, transparent 70%),
+                  linear-gradient(180deg, var(--navy) 0%, var(--navy2) 100%);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,87,183,0.18); border: 1px solid rgba(0,87,183,0.45);
+      padding: 5px 16px; border-radius: 50px;
+      font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--ua-blue-light); margin-bottom: 28px;
+    }
+    .hero-badge::before { content: '●'; color: var(--accent-green); font-size: 10px; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .hero-logo {
+      width: clamp(160px, 32vw, 260px);
+      filter: drop-shadow(0 0 30px rgba(0,87,183,0.5)) drop-shadow(0 0 60px rgba(200,146,10,0.2));
+      animation: float 5s ease-in-out infinite;
+      margin-bottom: 32px;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 7vw, 76px);
+      line-height: 1.0;
+      letter-spacing: 3px;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .hero h1 .accent { color: var(--gold-light); }
+    .hero-subtitle {
+      font-size: clamp(14px, 2.2vw, 18px);
+      color: var(--text-dim); font-weight: 400;
+      max-width: 580px; margin: 0 auto 36px;
+    }
+    .hero-subtitle strong { color: var(--silver-light); font-weight: 600; }
+
+    .hero-cta-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+      color: var(--navy); text-decoration: none;
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(18px, 2.8vw, 22px);
+      letter-spacing: 2px; padding: 16px 44px; border-radius: 5px;
+      box-shadow: 0 0 30px rgba(200,146,10,0.45), 0 6px 20px rgba(0,0,0,0.4);
+      transition: all .28s; cursor: pointer; border: none;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(240,180,41,0.6), 0 10px 30px rgba(0,0,0,0.4); }
+    .btn-primary svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .hero-trust { font-size: 12px; color: var(--text-dim); letter-spacing: 0.5px; }
+    .hero-trust a { color: var(--ua-blue-light); text-decoration: none; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), var(--gold) 50%, var(--border), transparent);
+      margin: 0;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      padding: clamp(60px, 8vw, 100px) clamp(20px, 5vw, 80px);
+      max-width: 1100px; margin: 0 auto;
+    }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px; display: block;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 5vw, 52px);
+      color: var(--white); letter-spacing: 2px; line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .section-title .ua { color: var(--ua-blue-light); }
+    .section-lead {
+      font-size: clamp(15px, 2vw, 17px); color: var(--text);
+      max-width: 700px; margin-bottom: 48px;
+    }
+
+    /* ── WHO WE ARE ── */
+    .who-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    }
+    .who-card {
+      background: linear-gradient(135deg, var(--navy2) 0%, var(--navy3) 100%);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 28px 24px;
+      position: relative; overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .who-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+    }
+    .who-card.tech::before { background: var(--gold); }
+    .who-card.field::before { background: var(--ua-blue-light); }
+    .who-card:hover { transform: translateY(-4px); box-shadow: var(--glow-gold); }
+    .who-card.field:hover { box-shadow: var(--glow-blue); }
+    .who-card-icon { font-size: 32px; margin-bottom: 14px; }
+    .who-card h3 {
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+    .who-card.tech h3 { color: var(--gold-light); }
+    .who-card.field h3 { color: var(--ua-blue-light); }
+    .who-card p { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+    .who-intro {
+      background: linear-gradient(135deg, rgba(0,87,183,0.1) 0%, rgba(11,22,48,0.8) 100%);
+      border: 1px solid rgba(0,87,183,0.3); border-radius: 10px;
+      padding: 28px 28px; margin-bottom: 28px;
+      font-size: 16px; color: var(--silver-light); line-height: 1.8;
+    }
+    .who-intro strong { color: var(--gold-light); }
+
+    /* ── WHAT WE DO ── */
+    .do-bg {
+      background: linear-gradient(180deg, var(--navy2) 0%, var(--navy) 100%);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: clamp(60px, 8vw, 100px) clamp(20px, 5vw, 80px);
+    }
+    .do-inner { max-width: 1100px; margin: 0 auto; }
+    .do-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .do-card {
+      background: var(--navy); border: 1px solid var(--border);
+      border-radius: 8px; padding: 30px 22px;
+      text-align: center; position: relative;
+      transition: all .28s;
+    }
+    .do-card:hover { border-color: var(--gold); box-shadow: var(--glow-gold); transform: translateY(-4px); }
+    .do-card-num {
+      font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--gold-pale);
+      position: absolute; top: 10px; right: 16px; line-height: 1;
+      user-select: none; pointer-events: none;
+    }
+    .do-card-icon { font-size: 38px; margin-bottom: 14px; }
+    .do-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1px; color: var(--gold-light); margin-bottom: 10px; }
+    .do-card p { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+    /* ── WHY SUPPORT ── */
+    .why-lead {
+      font-size: 16px; color: var(--text); line-height: 1.8;
+      max-width: 780px; margin-bottom: 36px;
+    }
+    .why-lead strong { color: var(--gold-light); }
+    .needs-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+      margin-bottom: 36px;
+    }
+    .need-item {
+      background: var(--navy2); border: 1px solid var(--border);
+      border-radius: 7px; padding: 18px 20px;
+      display: flex; align-items: flex-start; gap: 14px;
+      transition: all .22s;
+    }
+    .need-item:hover { border-color: var(--gold); background: var(--navy3); }
+    .need-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+    .need-item h4 { font-size: 14px; font-weight: 700; color: var(--silver-light); margin-bottom: 4px; }
+    .need-item p { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+    .why-callout {
+      background: linear-gradient(135deg, rgba(200,146,10,0.12) 0%, rgba(6,13,31,0.9) 100%);
+      border: 1px solid rgba(200,146,10,0.4); border-radius: 10px;
+      padding: 24px 28px; font-size: 15px; color: var(--silver-light);
+      line-height: 1.8;
+    }
+    .why-callout strong { color: var(--gold-light); }
+
+    /* ── CTA SECTION ── */
+    .cta-bg {
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy2) 50%, var(--navy) 100%);
+      border-top: 1px solid var(--border);
+      padding: clamp(70px, 10vw, 120px) clamp(20px, 5vw, 80px);
+      text-align: center;
+    }
+    .cta-inner { max-width: 700px; margin: 0 auto; }
+    .cta-inner .section-title { font-size: clamp(32px, 6vw, 64px); }
+    .cta-body { font-size: 16px; color: var(--text); margin-bottom: 40px; line-height: 1.8; }
+    .cta-body strong { color: var(--silver-light); }
+
+    .btn-hero-wrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--ua-blue-light); text-decoration: none;
+      font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+      border: 1px solid rgba(26,125,232,0.35); padding: 10px 24px; border-radius: 4px;
+      transition: all .22s;
+    }
+    .btn-secondary:hover { border-color: var(--ua-blue-light); background: rgba(26,125,232,0.1); }
+
+    .cta-signals {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 24px;
+      margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--border);
+    }
+    .signal {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-dim);
+    }
+    .signal svg { width: 18px; height: 18px; color: var(--gold); flex-shrink: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); border-top: 1px solid var(--border);
+      padding: 32px 24px; text-align: center;
+    }
+    footer p { font-size: 12px; color: var(--text-dim); line-height: 1.8; }
+    footer a { color: var(--ua-blue-light); text-decoration: none; }
+    footer strong { color: var(--silver); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+
+    /* ── PROGRESS BAR MOCKUP ── */
+    .progress-bar-wrap {
+      background: rgba(200,146,10,0.1); border: 1px solid rgba(200,146,10,0.25);
+      border-radius: 6px; padding: 20px 22px; margin-bottom: 36px;
+    }
+    .progress-label { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; }
+    .progress-label span:first-child { color: var(--text-dim); }
+    .progress-label span:last-child { color: var(--gold-light); font-weight: 700; }
+    .progress-track {
+      height: 8px; background: rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 10px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+      box-shadow: 0 0 10px rgba(200,146,10,0.5);
+      width: 0; transition: width 1.8s cubic-bezier(.2,.8,.3,1);
+    }
+    .progress-sub { font-size: 12px; color: var(--text-dim); margin-top: 8px; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .site-header { padding: 10px 16px; }
+      .header-logo-text { font-size: 16px; }
+      .header-cta { padding: 8px 14px; font-size: 13px; }
+      .who-grid { grid-template-columns: 1fr; }
+      .do-cards { grid-template-columns: 1fr; }
+      .needs-grid { grid-template-columns: 1fr; }
+      .cta-signals { gap: 16px; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { letter-spacing: 1px; }
+      .section-title { letter-spacing: 1px; }
+    }
+
+    /* ── SCAN LINE EFFECT ── */
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+    .scanline {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to bottom, transparent, rgba(0,87,183,0.08), transparent);
+      animation: scanline 8s linear infinite;
+      pointer-events: none; z-index: 3;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="circuit-canvas"></canvas>
+<div class="scanline"></div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="#" class="header-logo">
+    <img src="logo.png" alt="РБпАК логотип">
+    <div class="header-logo-text">
+      РБпАК
+      <span>Волонтерський хаб</span>
+    </div>
+  </a>
+  <a href="#donate" class="header-cta">Підтримати</a>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-badge">🛡 Олександрівський напрямок · 24/7</div>
+  <img src="logo.png" alt="Волонтерський хаб РБпАК" class="hero-logo">
+  <h1>Волонтерський хаб<br><span class="accent">РБпАК</span></h1>
+  <p class="hero-subtitle">
+    Технологічний моніторинг, інженерні рішення та<br>
+    <strong>польова практика</strong> на лінії зіткнення
+  </p>
+  <div class="hero-cta-wrap">
+    <a href="#donate" class="btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Підтримати РБпАК
+    </a>
+    <span class="hero-trust">Переказ через ПриватБанк · Безпечно та прозоро</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHO WE ARE -->
+<div class="section" id="who">
+  <span class="section-label reveal">01 / Про нас</span>
+  <h2 class="section-title reveal">Хто <span class="ua">ми?</span></h2>
+
+  <div class="who-intro reveal">
+    Ми — <strong>синергія інженерної думки та польової практики</strong> на Олександрівському напрямку.
+    Таке поєднання дозволяє нам миттєво адаптувати цивільні технології під суворі реалії сьогодення.
+  </div>
+
+  <div class="who-grid">
+    <div class="who-card tech reveal reveal-delay-1">
+      <div class="who-card-icon">⚙️</div>
+      <h3>Технічні спеціалісти</h3>
+      <p>Розробляють, прошивають та налаштовують складні системи. Вони — мозковий центр, що перетворює комерційні рішення на бойові інструменти.</p>
+    </div>
+    <div class="who-card field reveal reveal-delay-2">
+      <div class="who-card-icon">🎯</div>
+      <h3>Польові практики</h3>
+      <p>Беруть участь у виїздах, керують моніторинговими платформами безпосередньо на лінії зіткнення та реалізують завдання у найскладніших умовах.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- WHAT WE DO -->
+<div class="do-bg" id="do">
+  <div class="do-inner">
+    <span class="section-label reveal">02 / Наша робота</span>
+    <h2 class="section-title reveal">Чим ми займаємося <span class="ua">щодня?</span></h2>
+    <div class="do-cards">
+      <div class="do-card reveal reveal-delay-1">
+        <div class="do-card-num">01</div>
+        <div class="do-card-icon">🛰</div>
+        <h3>Повітряний моніторинг</h3>
+        <p>Безперервний аналіз, координація та повітряний моніторинг визначених секторів у режимі 24/7.</p>
+      </div>
+      <div class="do-card reveal reveal-delay-2">
+        <div class="do-card-num">02</div>
+        <div class="do-card-icon">🛡</div>
+        <h3>Безпека підрозділів</h3>
+        <p>Забезпечуємо безпеку суміжних підрозділів, вчасно виявляємо ризики та допомагаємо приймати точні рішення.</p>
+      </div>
+      <div class="do-card reveal reveal-delay-3">
+        <div class="do-card-num">03</div>
+        <div class="do-card-icon">🔧</div>
+        <h3>Автономна лабораторія</h3>
+        <p>Діємо як автономна лабораторія для роботи з технікою в екстремальних режимах — ремонт, модернізація, адаптація.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY SUPPORT -->
+<div class="section" id="why">
+  <span class="section-label reveal">03 / Чому важливо</span>
+  <h2 class="section-title reveal">Чому нам потрібна<br><span class="ua">підтримка спільноти?</span></h2>
+
+  <div class="why-lead reveal">
+    Сучасне протистояння — це <strong>війна технологій</strong>, які застарівають або виходять з ладу за лічені дні.
+    Левова частка нашої внутрішньої роботи — постійний ремонт, удосконалення та адаптація обладнання до нових викликів радіоелектронного середовища.
+  </div>
+
+  <div class="needs-grid">
+    <div class="need-item reveal reveal-delay-1">
+      <div class="need-icon">🔌</div>
+      <div>
+        <h4>Кабелі, перехідники та роз'єми</h4>
+        <p>Спеціальні компоненти для з'єднання і ремонту бортових систем.</p>
+      </div>
+    </div>
+    <div class="need-item reveal reveal-delay-2">
+      <div class="need-icon">📡</div>
+      <div>
+        <h4>Високочастотні антени та плати</h4>
+        <p>Антени та плати ініціації для стійкого зв'язку в умовах РЕБ.</p>
+      </div>
+    </div>
+    <div class="need-item reveal reveal-delay-1">
+      <div class="need-icon">🔋</div>
+      <div>
+        <h4>Елементи живлення та захист</h4>
+        <p>Акумулятори, термоусадки та захисні кейси для польових умов.</p>
+      </div>
+    </div>
+    <div class="need-item reveal reveal-delay-2">
+      <div class="need-icon">🛠</div>
+      <div>
+        <h4>Відновлення корпусів платформ</h4>
+        <p>Матеріали для швидкого ремонту корпусів після пошкоджень.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="why-callout reveal">
+    💡 <strong>Масштабні інструменти не працюватимуть без цих дрібниць</strong>, а розхідні матеріали потрібні постійно і у великих обсягах. Саме тому ваша підтримка — не разова допомога, а системне забезпечення нашої боєздатності.
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<div class="cta-bg" id="donate">
+  <div class="cta-inner">
+    <span class="section-label">04 / Долучитися</span>
+    <h2 class="section-title">Як долучитися<br><span class="ua">до проєкту?</span></h2>
+    <p class="cta-body">
+      Ми виконуємо свою роботу у режимі <strong>24/7</strong>, забезпечуючи життєздатність технічного парку.
+      Ви можете стати частиною нашого проєкту, підтримавши матеріально-технічне забезпечення екіпажу.
+      <br><br><strong>Кожна дія наближає спільну мету.</strong>
+    </p>
+
+    <div class="progress-bar-wrap reveal">
+      <div class="progress-label">
+        <span>Поточний збір на розхідники</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-fill"></div>
+      </div>
+      <div class="progress-sub">Збираємо постійно — кожен внесок одразу йде в роботу.</div>
+    </div>
+
+    <div class="btn-hero-wrap reveal">
+      <a href="https://www.privat24.ua/send/j7kdv" class="btn-primary" id="donate-btn" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        Підтримати РБпАК
+      </a>
+      <span style="font-size:13px;color:var(--text-dim);">Переказ через ПриватБанк · Усі кошти — на технічне забезпечення</span>
+    </div>
+
+    <div class="cta-signals">
+      <div class="signal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Режим роботи: 24/7
+      </div>
+      <div class="signal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Команда на передовій
+      </div>
+      <div class="signal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Олександрівський напрямок
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <strong>Волонтерський хаб «РБпАК»</strong><br>
+    Технологічний моніторинг · Інженерні рішення · Польова практика<br>
+    <span style="opacity:.5;font-size:11px;">Цей сайт — волонтерський інформаційний ресурс. Усі пожертви є добровільними.</span>
+  </p>
+</footer>
+
+<script>
+/* ── CIRCUIT BOARD CANVAS ── */
+(function() {
+  const canvas = document.getElementById('circuit-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, nodes = [], lines = [];
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    init();
+  }
+
+  function init() {
+    nodes = [];
+    lines = [];
+    const count = Math.floor((w * h) / 18000);
+    for (let i = 0; i < count; i++) {
+      nodes.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2 + 1, pulse: Math.random() * Math.PI * 2 });
+    }
+    nodes.forEach((n, i) => {
+      if (i < nodes.length - 1 && Math.random() > 0.4) {
+        lines.push({ from: n, to: nodes[i + Math.floor(Math.random() * 3) + 1] || nodes[0] });
+      }
+    });
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(0,87,183,0.6)';
+    ctx.lineWidth = 0.7;
+    lines.forEach(l => {
+      ctx.beginPath(); ctx.moveTo(l.from.x, l.from.y); ctx.lineTo(l.to.x, l.to.y); ctx.stroke();
+    });
+    nodes.forEach(n => {
+      const glow = Math.sin(t * 0.001 + n.pulse) * 0.5 + 0.5;
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.r + glow, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,146,10,${0.4 + glow * 0.6})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+})();
+
+/* ── SCROLL REVEAL ── */
+(function() {
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+})();
+
+/* ── PROGRESS BAR ANIMATION ── */
+(function() {
+  const fill = document.getElementById('prog-fill');
+  const pct = document.getElementById('progress-pct');
+  const target = 67;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        fill.style.width = target + '%';
+        let cur = 0;
+        const step = setInterval(() => { cur = Math.min(cur + 1, target); pct.textContent = cur + '%'; if (cur >= target) clearInterval(step); }, 25);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  io.observe(fill.parentElement.parentElement);
+})();
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>
